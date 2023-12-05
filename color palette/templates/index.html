@@ -12,5 +12,28 @@
   </head>
   <body>
     <h1>Hellow bre</h1>
+    <form id="form">
+      <input type="text" name="query" />
+      <button>Submit</button>
+    </form>
+    <script>
+      const form = document.getElementById('form');
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const query = form.elements.query.value;
+
+        fetch('/pallete', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            query: query,
+          }),
+        })
+          .then((result) => result.json())
+          .then(console.log);
+      });
+    </script>
   </body>
 </html>

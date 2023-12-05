@@ -41,10 +41,6 @@ def get_colors(msg):
     colors = json.loads(response["choices"][0]["text"])
     return colors
 
-
-
-
-
 @app.route('/pallete', methods =["POST"])
 def prompt_to_palette():
     query= request.form.get("query")
