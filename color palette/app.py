@@ -41,18 +41,19 @@ def get_colors(msg):
     colors = json.loads(response["choices"][0]["text"])
     return colors
 
-@app.route('/pallete', methods =["POST"])
+
+@app.route("/palette", methods=["POST"])
 def prompt_to_palette():
-    query= request.form.get("query")
+    query = request.form.get("query")
     colors = get_colors(query)
     return {"colors": colors}
+    
 
-@app.route('/')
+@app.route("/")
 def index():
     return render_template("index.html")
 
 if __name__ == "__main__":
-    app.run(debug=True);
-
+    app.run(debug=True)
 
  
