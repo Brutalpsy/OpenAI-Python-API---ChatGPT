@@ -1,15 +1,15 @@
 import openai
 from dotenv import load_dotenv
 import os
-
-load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+import argparse
 
 PROMPT = """
-You will receive a file's contents as text.
-Generatea code review for a file. Indicate what changes should be made to imporve
-it's style, pefromance, readability and mentainability. If there are any reputable libraries that could be introduced to imporve the code,
-suggest them. Be kind and constructive. For each suggested change, include line numbers to which are you referring
+You will receive a file's contents as text. 
+Generate a code review for the file. 
+Indicate what changes should be made to improve its style, performance, readability, and maintainability.
+If there are any reputable libraries that could be introduced to improve the code, suggest them.
+Be kind and constructive.
+For each suggested change, include line numbers to which you are referring.
 """
 
 def code_review(file_path, model):
@@ -32,6 +32,16 @@ def make_code_review_request(fileContent, model):
 
     return result["choices"][0]["message"]["content"]
 
+def main():
+    parser = argparse.ArgumentParser(description="Simple code reviewer for a file")
+    parser.add_argument("file")
+    parser.add_argument("--model", default="gpt-4")
+    args = parser.parse_args()
+    code_review(args.file, args.model)
 
-code_review("./sample/tree.py","gpt-4")
+if __name__ == "__main__":
+    load_dotenv()
+    openai.api_key = os.getenv("OPENAI_API_KEY")
+    main()
+
 
