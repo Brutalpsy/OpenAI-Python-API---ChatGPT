@@ -12,20 +12,26 @@ it's style, pefromance, readability and mentainability. If there are any reputab
 suggest them. Be kind and constructive. For each suggested change, include line numbers to which are you referring
 """
 
-fileContent = """
-    def mystery(x,y)
-        return x ** y
-"""
+def code_review(file_path, model):
+    with open(file_path,"r") as file:
+        content = file.read()
+    generated_code_review = make_code_review_request(content, model)
+    print(generated_code_review)
 
-messages = [
-    {"role": "system", "content": PROMPT},
-    {"role": "user", "content": f"Code review the following file: {fileContent}"}
-]
 
-result = openai.ChatCompletion.create(
-    model="gpt-4",
-    messages=messages
-)
+def make_code_review_request(fileContent, model):
+    messages = [
+        {"role": "system", "content": PROMPT},
+        {"role": "user", "content": f"Code review the following file: {fileContent}"}
+    ]
 
-print(result["choices"][0]["message"]["content"])
+    result = openai.ChatCompletion.create(
+        model=model,
+        messages=messages
+    )
+
+    return result["choices"][0]["message"]["content"]
+
+
+code_review("./sample/tree.py","gpt-4")
 
