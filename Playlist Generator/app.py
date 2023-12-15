@@ -2,12 +2,20 @@ import spotipy
 from dotenv import dotenv_values
 import json
 import openai
+import argparse
 
 
 config = dotenv_values(".env")
 openai.api_key = config["OPENAI_API_KEY"]
 
-def get_playlist(prompt, count=8):
+parser = argparse.ArgumentParser(description="Simple command line song utility")
+parser.add_argument("-p", type=str, default="My generated playlist", help="The prompt to descibe the playlist")
+parser.add_argument("-n", type=int, default=10, help="The number of songs to add to playlist")
+
+args = parser.parse_args()
+
+
+def get_playlist(prompt, count=10):
     example_json = """
     [
       {"song": "Everybody Hurts", "artist": "R.E.M."},
@@ -30,16 +38,13 @@ def get_playlist(prompt, count=8):
 
     response = openai.ChatCompletion.create(
         messages=messages,
-        model="gpt-4",
-        max_tokens=400
+        model="gpt-4"
     )
 
     playlist = json.loads(response["choices"][0]["message"]["content"])
     return playlist
 
-playlist = get_playlist("Synthwave songs",11)
-
-
+playlist = get_playlist(args.p,args.n)
 
 sp = spotipy.Spotify(
     auth_manager = spotipy.SpotifyOAuth(
@@ -60,12 +65,11 @@ for item in playlist:
     search_results= sp.search(q=query, type="track", limit=10)
     track_ids.append(search_results["tracks"]["items"][0]["id"])
 
-
-
 created_playlist = sp.user_playlist_create(
     current_user["id"],
     public = False,
-    name = "TESTING"
+    name = args.p
 )
+
 
 sp.user_playlist_add_tracks(current_user["id"],created_playlist["id"],track_ids)
