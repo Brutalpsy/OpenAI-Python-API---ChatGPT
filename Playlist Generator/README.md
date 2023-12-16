@@ -7,3 +7,7 @@ SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=
 
 OPENAI_API_KEY=
+
+And after that it can be used with something like: 
+
+<b> python app.py -p "best synthwave songs" -n 22 </b>
