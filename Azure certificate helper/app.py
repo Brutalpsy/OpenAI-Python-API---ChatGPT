@@ -10,9 +10,16 @@ def main():
     args = parser.parse_args()
     openai.api_key = os.environ["OPENAI_API_KEY"]
 
-    prompt = args.p
-    answer = get_answer(prompt)
-    print(answer)
+    while True:
+        try:
+            print("\n\n")
+            print("Your Question:")
+            user_input = input()
+            answer = get_answer(user_input)
+            print(answer)
+        except KeyboardInterrupt:
+            print("Exiting...")
+            break
 
 def get_answer(prompt):
     messages = [
