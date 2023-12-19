@@ -7,7 +7,6 @@ def main():
     parser = argparse.ArgumentParser(description="Simple command line utility")
     parser.add_argument("-p", type=str, help="The prompt")
 
-    args = parser.parse_args()
     openai.api_key = os.environ["OPENAI_API_KEY"]
 
     while True:
@@ -23,7 +22,13 @@ def main():
 
 def get_answer(prompt):
     messages = [
-        {"role": "system", "content": """as an expert dotnet solution architect, c#, domain-driven development, can you refactor this method into a separate class :
+        {"role": "system", "content": """You are an expert Azure Developer with a broad knowlage of the azure platform 
+        and azure ecosystem, i will ask you some questions that i have for the azure 204 exam, you will provide me with answer(s) and explanation on those questions. 
+        Response should be in format: 
+         Answer: 
+		 <assistant_answer>
+		 Explanation:
+         <assistant_explanation> 
         """   
         },
         {"role": "user", "content": f"{prompt}"},
